@@ -43,18 +43,22 @@ func Salt() ([]byte, error) {
 
 // Argon2id returns the Argon2id hash of the password using the provided salt.
 //
-//	hash := argon.Argon2id("password", salt)
-func Argon2id(password string, salt []byte) []byte {
-	return argon2.IDKey([]byte(password), salt, Time, Memory, Threads, KeyLen)
+//	hash := argon.Argon2id("input", salt)
+//
+// without salt
+//
+//	hash := argon.Argon2id("input", nil)
+func Argon2id(input string, salt []byte) []byte {
+	return argon2.IDKey([]byte(input), salt, Time, Memory, Threads, KeyLen)
 }
 
 // Argon2idSalt returns the Argon2id hash of the password and a random salt.
 //
 //	hash, salt, err := argon.Argon2idSalt("password")
-func Argon2idSalt(password string) ([]byte, []byte, error) {
+func Argon2idSalt(input string) ([]byte, []byte, error) {
 	salt, err := Salt()
 	if err != nil {
 		return nil, nil, err
 	}
-	return argon2.IDKey([]byte(password), salt, Time, Memory, Threads, KeyLen), salt, nil
+	return argon2.IDKey([]byte(input), salt, Time, Memory, Threads, KeyLen), salt, nil
 }
